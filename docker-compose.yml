@@ -1,6 +1,7 @@
 version: '3'
 services:
     nginx:
+        container_name: nginx
         image: nginx:latest
         volumes:
             - ./:/var/www
@@ -9,8 +10,9 @@ services:
             - "8876:80"
         depends_on:
             - app
-        container_name: nginx
     app:
+        env_file: .env
+        container_name: app
         build:
             context: .
             dockerfile: _docker/app/Dockerfile
@@ -18,14 +20,15 @@ services:
             - ./:/var/www
         depends_on:
             - db
-        container_name: app
+        working_dir: /var/www/
     db:
+        env_file: .env
         image: mysql:latest
         container_name: mysql
         ports:
             - "${FORWARD_DB_PORT:-3306}:3306"
         environment:
-            MYSQL_DATABASE: "${DB_DATABASE:-task-hub}"
+            MYSQL_DATABASE: "${DB_DATABASE:-mysql}"
             MYSQL_USER: "${DB_USERNAME:-user}"
             MYSQL_PASSWORD: "${DB_PASSWORD:-user}"
             MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root}"
@@ -33,7 +36,18 @@ services:
             - "./_docker/mysql:/var/lib/mysql"
         command:
             - "--default-authentication-plugin=mysql_native_password"
-
-
-
-
+    mailhog:
+        env_file: .env
+        image: mailhog/mailhog
+        logging:
+            driver: 'none'
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+    redis:
+        env_file: .env
+        image: redis
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - "./_docker/redis/data:/data"
