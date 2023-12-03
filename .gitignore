@@ -20,4 +20,5 @@ yarn-error.log
 /_docker/mysql
 /_docker/redis
 /storage
+/bootstrap
 

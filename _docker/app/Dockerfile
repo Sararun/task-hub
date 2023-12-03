@@ -27,7 +27,7 @@ RUN pecl install xdebug \
 COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
 
 # Clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/ /tmp/ /var/tmp/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/ /var/tmp/*
 
 # Install composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
