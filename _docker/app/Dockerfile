@@ -14,7 +14,9 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install gd \
-    && docker-php-ext-install zip
+    && docker-php-ext-install zip \
+    && docker-php-ext-install opcache
+
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
