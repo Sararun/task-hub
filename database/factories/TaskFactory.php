@@ -14,14 +14,14 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word(),
+            'name'        => $this->faker->unique()->word(),
             'description' => $this->faker->text(),
-            'assign_by' => null,
-            'assign_to' => null,
-            'status' => TaskStatuses::CREATED,
-            'due_date' => null,
-            'priority' => TaskPriorities::UNDEFINED,
-            'blocked_by' => null,
+            'assign_by'   => null,
+            'assign_to'   => null,
+            'status'      => TaskStatuses::CREATED,
+            'due_date'    => null,
+            'priority'    => TaskPriorities::UNDEFINED,
+            'blocked_by'  => null,
         ];
     }
 }

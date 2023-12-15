@@ -54,7 +54,8 @@ use Illuminate\Support\Carbon;
  */
 class Task extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -68,7 +69,7 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'status' => TaskStatuses::class,
+        'status'   => TaskStatuses::class,
         'priority' => TaskPriorities::class,
         'due_date' => 'datetime',
     ];
@@ -85,6 +86,6 @@ class Task extends Model
 
     public function blocker(): BelongsTo
     {
-        return $this->belongsTo(Task::class, 'blocked_by');
+        return $this->belongsTo(self::class, 'blocked_by');
     }
 }

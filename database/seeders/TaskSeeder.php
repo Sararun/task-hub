@@ -15,9 +15,9 @@ class TaskSeeder extends Seeder
         $tasksFactories->each(function (Task $task) {
             $user = User::all()->random();
             try {
-                $randomTask = Task::inRandomOrder()->firstOrFail();
+                $randomTask       = Task::inRandomOrder()->firstOrFail();
                 $task->blocked_by = $randomTask->id;
-                $task->assign_by = $user->id;
+                $task->assign_by  = $user->id;
                 $task->save();
             } catch (ModelNotFoundException) {
                 $task->assign_by = $user->id;

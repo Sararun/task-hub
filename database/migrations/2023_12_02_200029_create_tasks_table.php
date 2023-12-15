@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignId('assign_by')->constrained('users');
-            $table->foreignId('assign_to')->nullable()->constrained('users');;
+            $table->foreignId('assign_to')->nullable()->constrained('users');
             $table->unsignedTinyInteger('status');
             $table->dateTime('due_date')->nullable();
             $table->unsignedTinyInteger('priority');
