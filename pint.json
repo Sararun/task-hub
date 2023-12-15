@@ -1,3 +1,55 @@
 {
-    "preset": "psr12"
+    "preset": "psr12",
+    "rules": {
+        "align_multiline_comment": true,
+        "array_indentation": true,
+        "array_push": true,
+        "binary_operator_spaces": {
+            "default": "align_single_space_minimal"
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "method": "one",
+                "property": "one"
+            }
+        },
+        "method_argument_space": {
+            "on_multiline": "ensure_fully_multiline",
+            "keep_multiple_spaces_after_comma": true
+        },
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        },
+        "single_quote": true,
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "assign_null_coalescing_to_coalesce_equal": true,
+        "blank_line_after_namespace": true,
+        "class_reference_name_casing": true,
+        "declare_equal_normalize": {
+            "space": "single"
+        },
+        "explicit_string_variable": true,
+        "lambda_not_used_import": true,
+        "no_empty_statement": true,
+        "no_singleline_whitespace_before_semicolons": true,
+        "no_unused_imports": true,
+        "no_whitespace_in_blank_line": true,
+        "single_blank_line_at_eof": true,
+        "whitespace_after_comma_in_array": true,
+        "no_closing_tag": true,
+        "ternary_to_null_coalescing": true,
+        "cast_spaces": true,
+        "no_blank_lines_after_class_opening": true,
+        "no_multiline_whitespace_around_double_arrow": true,
+        "unary_operator_spaces": true,
+        "trim_array_spaces": true,
+        "ternary_operator_spaces": true,
+        "self_accessor": true,
+        "phpdoc_trim": true,
+        "phpdoc_indent": true,
+        "object_operator_without_whitespace": true
+    }
 }
+
