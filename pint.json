@@ -4,9 +4,6 @@
         "align_multiline_comment": true,
         "array_indentation": true,
         "array_push": true,
-        "binary_operator_spaces": {
-            "default": "align_single_space_minimal"
-        },
         "class_attributes_separation": {
             "elements": {
                 "method": "one",
