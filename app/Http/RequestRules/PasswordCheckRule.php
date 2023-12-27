@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordCheckRule implements ValidationRule
 {
-
     public function __construct(private string $email)
     {
     }
