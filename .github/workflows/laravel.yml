@@ -1,4 +1,4 @@
-name: Laravel Tests
+name: Laravel Workflow
 
 on:
   push:
@@ -21,12 +21,6 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=3
 
     steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.1'
-        extensions: mbstring, xml, ctype, iconv, mysql
-        coverage: none
-
     - uses: actions/checkout@v3
 
     - name: Cache Composer Dependencies
@@ -35,6 +29,12 @@ jobs:
         path: vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, xml, ctype, iconv, mysql
+        coverage: none
 
     - name: Install Dependencies
       run: composer install --prefer-dist --no-progress --no-scripts
@@ -57,3 +57,31 @@ jobs:
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: vendor/bin/phpunit
+
+  code-style-fix:
+    runs-on: ubuntu-latest
+    needs: laravel-tests
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # для получения полной истории коммитов
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        coverage: none
+
+    - name: Install Dependencies
+      run: composer install --prefer-dist --no-progress --no-scripts
+
+    - name: Run Laravel Pint
+      run: ./vendor/bin/pint
+
+    - name: Commit and Push code style fixes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add -A
+        git commit -m "Code style fix" -a || true # предотвращает ошибку, если нет изменений
+        git push
