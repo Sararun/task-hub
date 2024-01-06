@@ -17,10 +17,16 @@ class AuthController extends Controller
 
         $credentials = $request->validated();
 
-        if (Auth::attempt($credentials)) {
-            return response()->json(['message' => 'User successfully authorized']);
-        }
-        return response()->json(status: Response::HTTP_SERVICE_UNAVAILABLE);
+        Auth::attempt($credentials);
+
+        $user = User::firstWhere('email', $credentials['email']);
+
+        return response()->json(
+            [
+                'message' => 'User successfully authorized.',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ]
+        );
     }
 
     final public function register(RegisterRequest $request): JsonResponse
