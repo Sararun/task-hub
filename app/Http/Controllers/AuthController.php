@@ -2,25 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Interfaces\Requests\LoginRequestInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    final public function login(LoginRequest $request): JsonResponse
+    final public function login(LoginRequestInterface $request): JsonResponse
     {
-
         $credentials = $request->validated();
 
-        if (Auth::attempt($credentials)) {
-            return response()->json(['message' => 'User successfully authorized']);
-        }
-        return response()->json(status: Response::HTTP_SERVICE_UNAVAILABLE);
+        Auth::attempt($credentials);
+
+        $user = User::firstWhere('email', $credentials['email']);
+
+        return response()->json(
+            [
+                'message' => 'User successfully authorized.',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ]
+        );
     }
 
     final public function register(RegisterRequest $request): JsonResponse
@@ -36,9 +40,7 @@ class AuthController extends Controller
     {
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json();
     }
