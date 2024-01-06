@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-//        if (App::environment() == 'testing') {
-//            dd(2);
-//        }
+        //        if (App::environment() == 'testing') {
+        //            dd(2);
+        //        }
     }
 }

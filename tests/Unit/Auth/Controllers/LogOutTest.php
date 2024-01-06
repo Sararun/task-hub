@@ -13,7 +13,7 @@ class LogOutTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $token = $user->createToken("API TOKEN")->plainTextToken;
+        $token = $user->createToken('API TOKEN')->plainTextToken;
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,

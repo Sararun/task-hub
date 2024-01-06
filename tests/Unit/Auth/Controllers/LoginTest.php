@@ -19,7 +19,7 @@ class LoginTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(['message' => 'User successfully authorized.'])
             ->assertJsonStructure(['token']);
-        
+
         $this->assertTrue(Auth::check());
     }
 }
