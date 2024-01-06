@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Auth\Test;
 
 use App\Interfaces\Requests\LoginRequestInterface;
 use App\Models\User;
 use App\Traits\Requests\LoginRequestTrait;
+use App\Traits\Requests\RequestValidationError;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Validator;
 
-class LoginRequest extends FormRequest implements LoginRequestInterface
+class LoginRequestTest extends FormRequest implements LoginRequestInterface
 {
     use LoginRequestTrait;
+    use RequestValidationError;
 
-    public $stopOnFirstFailure  = true;
+    public $stopOnFirstFailure = true;
 
     final public function rules(): array
     {
         return [
-            'email' => $this->getEmailRules(),
-            'password' => $this->getPasswordRules(),
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string', 'min:8'],
         ];
     }
 
@@ -28,7 +29,7 @@ class LoginRequest extends FormRequest implements LoginRequestInterface
     {
         $validator->after(function (Validator $valid): void {
             if ($valid->errors()->isNotEmpty()) {
-                LoginRequest::failed();
+                $this->failedValidation($valid);
             }
             $passwordCheckRule = function (): bool {
                 $user = User::firstWhere('email', $this->email);
@@ -38,17 +39,10 @@ class LoginRequest extends FormRequest implements LoginRequestInterface
                 return false;
             };
             if (!$passwordCheckRule()) {
-                LoginRequest::failed();
+                $valid->errors()->add('email', 'The email or password is not correct.');
+
+                $this->failedValidation($valid);
             }
         });
-    }
-
-    final public static function failed(): void
-    {
-        $response = response()->json([
-            'message' => 'The email or password is incorrect.',
-        ], 422);
-
-        throw new HttpResponseException($response);
     }
 }

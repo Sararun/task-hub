@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    final public function login(LoginRequest $request): JsonResponse
+    final public function login(LoginRequestInterface $request): JsonResponse
     {
 
         $credentials = $request->validated();

@@ -9,6 +9,8 @@ class RegisterRequest extends FormRequest
 {
     use RequestValidationError;
 
+    public $stopOnFirstFailure = true;
+
     final public function rules(): array
     {
         return [
